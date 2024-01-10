@@ -1,0 +1,330 @@
+
+	<name>Closed Roads</name>
+	<Style id="__managed_style_144C88685222242FACB9">
+		<IconStyle>
+			<scale>0.75</scale>
+			<Icon>
+				<href>https://raw.githubusercontent.com/yashrajbharti/kml-images/main/close.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<!DOCTYPE html>
+<html>
+  <head></head>
+  <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>Closed Roads</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+
+<td>Date</td>
+
+<td>19 September</td>
+
+</tr>
+<tr bgcolor="#D4E4F3">
+
+<td>Comment</td>
+
+<td>Closed Roads due to Lava Flow as of 20 Sept at 18:50 UTC</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+</html>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="__managed_style_2F0F16F2DB22242FACB9">
+		<IconStyle>
+			<scale>0.9</scale>
+			<Icon>
+				<href>https://raw.githubusercontent.com/yashrajbharti/kml-images/main/close.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<!DOCTYPE html>
+<html>
+  <head></head>
+  <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>Closed Roads</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+
+<td>Date</td>
+
+<td>19 September</td>
+
+</tr>
+<tr bgcolor="#D4E4F3">
+
+<td>Comment</td>
+
+<td>Closed Roads due to Lava Flow as of 20 Sept at 18:50 UTC</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+</html>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<width>1.5</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="__managed_style_0D41CE43DD22242FACB9">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_144C88685222242FACB9</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2F0F16F2DB22242FACB9</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="__managed_style_2BB1E4D05D2224300B16">
+		<IconStyle>
+			<scale>0.992728</scale>
+			<Icon>
+				<href>https://raw.githubusercontent.com/yashrajbharti/kml-images/main/close.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<!DOCTYPE html>
+<html>
+  <head></head>
+  <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>Closed Roads</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+
+<td>Date</td>
+
+<td>19 September</td>
+
+</tr>
+<tr bgcolor="#D4E4F3">
+
+<td>Comment</td>
+
+<td>Closed Roads due to Lava Flow as of 20 Sept at 18:50 UTC</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+</html>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<width>1.5</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="__managed_style_0A3309683E2224300B16">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1948BE84CF2224300B16</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2BB1E4D05D2224300B16</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="__managed_style_1948BE84CF2224300B16">
+		<IconStyle>
+			<scale>0.827273</scale>
+			<Icon>
+				<href>https://raw.githubusercontent.com/yashrajbharti/kml-images/main/close.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<!DOCTYPE html>
+<html>
+  <head></head>
+  <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>Closed Roads</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+
+<td>Date</td>
+
+<td>19 September</td>
+
+</tr>
+<tr bgcolor="#D4E4F3">
+
+<td>Comment</td>
+
+<td>Closed Roads due to Lava Flow as of 20 Sept at 18:50 UTC</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+</html>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Folder id="0A744516F92224119AD5">
+		<name>Situation Track</name>
+		<Placemark id="027327D5E92224119ADC">
+			<LookAt>
+				<longitude>-17.90509615001959</longitude>
+				<latitude>28.59286503669025</latitude>
+				<altitude>0</altitude>
+				<heading>-0.8989529024061744</heading>
+				<tilt>4.673353606108737</tilt>
+				<range>19988.10287229624</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#__managed_style_0D41CE43DD22242FACB9</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+        <altitudeMode>relativeToGround</altitudeMode>
+				<coordinates>-17.9134112216086,28.59302642474883,280</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="0CA485FF102224119ADD">
+			<LookAt>
+				<longitude>-17.90509615001959</longitude>
+				<latitude>28.59286503669025</latitude>
+				<altitude>0</altitude>
+				<heading>-0.8989529024061744</heading>
+				<tilt>4.673353606108737</tilt>
+				<range>19988.10287229624</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#__managed_style_0A3309683E2224300B16</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+        <altitudeMode>relativeToGround</altitudeMode>
+				<coordinates>-17.90918315085846,28.6173950317354,280</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="0685D2B70E2224119ADE">
+			<LookAt>
+				<longitude>-17.90509615001959</longitude>
+				<latitude>28.59286503669025</latitude>
+				<altitude>0</altitude>
+				<heading>-0.8989529024061744</heading>
+				<tilt>4.673353606108737</tilt>
+				<range>19988.10287229624</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#__managed_style_0A3309683E2224300B16</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+        <altitudeMode>relativeToGround</altitudeMode>
+				<coordinates>-17.93706670068562,28.64591953320307,280</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="0B1E130FF22224119ADF">
+			<LookAt>
+				<longitude>-17.90509615001959</longitude>
+				<latitude>28.59286503669025</latitude>
+				<altitude>0</altitude>
+				<heading>-0.8989529024061744</heading>
+				<tilt>4.673353606108737</tilt>
+				<range>19988.10287229624</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#__managed_style_0A3309683E2224300B16</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+        <altitudeMode>relativeToGround</altitudeMode>
+				<coordinates>-17.88185341341207,28.65600145453834,280</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="0CEEB114F42224119AE1">
+			<LookAt>
+				<longitude>-17.90509615001959</longitude>
+				<latitude>28.59286503669025</latitude>
+				<altitude>0</altitude>
+				<heading>-0.8989529024061744</heading>
+				<tilt>4.673353606108737</tilt>
+				<range>19988.10287229624</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#__managed_style_0A3309683E2224300B16</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+        <altitudeMode>relativeToGround</altitudeMode>
+				<coordinates>-17.87244137103556,28.63584461183963,280</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+
+
