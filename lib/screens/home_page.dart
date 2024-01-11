@@ -1,5 +1,7 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:earthquake_visualiser/api/usgsController.dart';
+import 'package:earthquake_visualiser/screens/button_screen.dart';
+import 'package:earthquake_visualiser/screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -242,7 +244,13 @@ class _HomePageState extends State<HomePage> {
                               scale: 10,
                             ),
                           ),
-                          onPressed: () {}),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ButtonScreen(),
+                                ));
+                          }),
                       SizedBox(
                         width: 40,
                       ),
@@ -329,6 +337,11 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 onPressed: () {
                                   print("debug pressed");
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SettingsPage(),
+                                      ));
                                 },
                               ),
                             ))
@@ -434,8 +447,8 @@ class _HomePageState extends State<HomePage> {
                         } else {
                           final ans =
                               await usgs.getJSON(startDate, endDate, number);
-                          final String kml =
-                              await usgs.getKML(startDate, endDate, number);
+                          // final String kml =
+                          //     await usgs.getKML(startDate, endDate, number);
                         }
                       },
                       child: const Text("Visualize it!"))

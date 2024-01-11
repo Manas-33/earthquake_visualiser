@@ -34,7 +34,8 @@ dependencies:
   google_fonts: ^6.1.0
   flutter_screenutil: ^5.9.0
   calendar_date_picker2: ^0.5.3
-
+  dartssh2: ^2.8.2
+  shared_preferences: ^2.2.2
   flutter:
     sdk: flutter
 

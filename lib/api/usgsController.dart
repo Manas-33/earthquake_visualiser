@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:earthquake_visualiser/widget/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,8 +28,12 @@ class USGSController {
           'https://earthquake.usgs.gov/fdsnws/event/1/query?format=kml&kmlanimated=true&kmlcolorby=depth&starttime=$startDate&endtime=$endDate&minmagnitude=$magnitude');
       final ans = await http.get(url);
       if (ans.statusCode == 200) {
-        await saveFileFromApi(ans).then((value) => print("success"));
-        return ans.body;
+        await saveFileFromApi(ans).then((value) {
+          print("success");
+          kmlValue = ans.body;
+        });
+
+        return ans;
       } else {
         return 'Request failed with status: ${ans.statusCode}';
       }
