@@ -1,8 +1,11 @@
-import 'package:dartssh2/dartssh2.dart';
-import 'package:earthquake_visualiser/connections/ssh.dart';
+import 'package:earthquake_visualiser/connections/lg.dart' as Lg;
+import 'package:earthquake_visualiser/connections/lg.dart';
+import 'package:earthquake_visualiser/constants.dart';
 import 'package:earthquake_visualiser/widget/connection_flag.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toasty_box/toast_enums.dart';
+import 'package:toasty_box/toast_service.dart';
 // TODO 5: Import the ssh file and the dartssh2 package
 
 class SettingsPage extends StatefulWidget {
@@ -15,11 +18,10 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool connectionStatus = false;
   // TODO 8: Declare SSH Instance
-  late SSH ssh;
-
+  late LGConnection lg;
   Future<void> _connectToLG() async {
     // TODO 10: Connect to Liquid Galaxy Rig
-    bool? result = await ssh.connectToLG();
+    bool? result = await lg.connectToLG();
     setState(() {
       connectionStatus = result!;
     });
@@ -29,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     // TODO 9: Initialize SSH Instance and uncomment _connectToLG()
-    ssh = SSH();
+    lg = LGConnection();
     _loadSettings();
     _connectToLG();
   }
@@ -173,13 +175,27 @@ class _SettingsPageState extends State<SettingsPage> {
                 onPressed: () async {
                   await _saveSettings();
                   // TODO 6: Initalize SSH Instance and call connectToLG() function
-                  SSH ssh = SSH();
-                  bool? result = await ssh.connectToLG();
+                  // SSH ssh = SSH();
+                  bool? result = await lg.connectToLG();
+                  print(result);
                   if (result == true) {
                     setState(() {
                       connectionStatus = true;
                     });
+                    ToastService.showSuccessToast(
+                      context,
+                      length: ToastLength.medium,
+                      expandedHeight: 100,
+                      message: "This is a success toast 🥂!",
+                    );
                     print('Connected to LG successfully');
+                  } else if (result == false || result == null) {
+                    ToastService.showSuccessToast(
+                      context,
+                      length: ToastLength.medium,
+                      expandedHeight: 100,
+                      message: "This is a warning toast!",
+                    );
                   }
                 },
                 child: const Padding(
@@ -224,10 +240,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 onPressed: () async {
                   // TODO 7: Initialize SSH and execute the demo command and test
-                  SSH ssh =
-                      SSH(); //Re-initialization of the SSH instance to avoid errors for beginners
-                  await ssh.connectToLG();
-                  SSHSession? execResult = await ssh.execute();
+                 //Re-initialization of the SSH instance to avoid errors for beginners
+                 LGConnection l = LGConnection();
+                  await l.connectToLG();
+                  var execResult = await l.searchPlace("India");
                   if (execResult != null) {
                     print('Command executed successfully');
                   } else {

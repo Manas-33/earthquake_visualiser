@@ -1,7 +1,11 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:earthquake_visualiser/api/usgsController.dart';
 import 'package:earthquake_visualiser/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +27,40 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomePage(),
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp(
+        home: AnimatedSplashScreen(
+          nextScreen: HomePage(),
+          splash: Column(
+            children: [
+              Image.asset(
+                'assets/images/image.png',
+                scale: 3,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Earthquake Visualiser",
+                style: GoogleFonts.openSans(
+                  textStyle: TextStyle(
+                    color: Colors.black,
+                    letterSpacing: .5,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
+            ],
+          ),
+          duration: 1700,
+          splashTransition: SplashTransition.scaleTransition,
+          pageTransitionType: PageTransitionType.leftToRight,
+        ),
+      ),
     );
   }
 }

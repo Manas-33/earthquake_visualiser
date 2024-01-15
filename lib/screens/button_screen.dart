@@ -1,10 +1,16 @@
 import 'package:earthquake_visualiser/api/usgsController.dart';
+import 'package:earthquake_visualiser/constants.dart';
+import 'package:earthquake_visualiser/models/flyto.dart';
+import 'package:earthquake_visualiser/models/kml_helper.dart';
+import 'package:earthquake_visualiser/widget/kmlStrings.dart';
 import 'package:earthquake_visualiser/widget/connection_flag.dart';
-import 'package:earthquake_visualiser/widget/constants.dart';
-import 'package:earthquake_visualiser/widget/reusable_card.dart';
 import 'package:flutter/material.dart';
 // TODO 12: Import connections/ssh.dart
-import 'package:earthquake_visualiser/connections/ssh.dart';
+import 'package:earthquake_visualiser/connections/lg.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:xml/xml.dart';
 
 bool connectionStatus = false;
 // TODO 17: Initialize const String searchPlace
@@ -19,17 +25,16 @@ class ButtonScreen extends StatefulWidget {
 
 class _ButtonScreenState extends State<ButtonScreen> {
   // TODO 13: Initialize SSH instance just like you did in the settings_page.dart, just uncomment the lines below, this time use the same instance for each of the tasks
-  late SSH ssh;
-
+  late LGConnection lg;
   @override
   void initState() {
     super.initState();
-    ssh = SSH();
+    lg = LGConnection();
     _connectToLG();
   }
 
   Future<void> _connectToLG() async {
-    bool? result = await ssh.connectToLG();
+    bool? result = await lg.connectToLG();
     setState(() {
       connectionStatus = result!;
     });
@@ -40,10 +45,20 @@ class _ButtonScreenState extends State<ButtonScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('LG Connection'),
+        title: Text(
+          "Liquid Galaxy Functions",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+              color: Colors.black,
+              letterSpacing: .5,
+              // fontSize: 3.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: Icon(Icons.settings),
             onPressed: () async {
               await Navigator.pushNamed(context, '/settings');
               _connectToLG();
@@ -52,10 +67,11 @@ class _ButtonScreenState extends State<ButtonScreen> {
         ],
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10),
+          Container(
+              padding: const EdgeInsets.only(top: 10, left: 20),
+              width: 200,
               child: ConnectionFlag(
                 status: connectionStatus,
               )),
@@ -63,84 +79,236 @@ class _ButtonScreenState extends State<ButtonScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: ReusableCard(
-                    colour: Colors.blue,
-                    onPress: () async {
-                      // TODO 14: Implement relaunchLG() as async task
-                      await ssh.relaunchLG();
-                    },
-                    cardChild: const Center(
-                      child: Text(
-                        'RELAUNCH LG',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Bounceable(
+                        onTap: () async {
+                          LGConnection client = LGConnection();
+                          await client.connectToLG();
+                          await client.relaunchLG();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .4,
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.green.withOpacity(0.75),
+                                  Colors.blue.withOpacity(0.75),
+                                  // Colors.blue
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // SizedBox(
+                              //   width: 15,
+                              // ),
+                              Icon(
+                                Icons.replay_sharp,
+                                size: 60,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 25,
+                              ),
+                              Text(
+                                "Relaunch Rig",
+                                style: GoogleFonts.openSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: .5,
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25,
+                              )
+                            ],
+                          ),
+                        )),
                   ),
                 ),
                 Expanded(
-                  child: ReusableCard(
-                    colour: Colors.blue,
-                    onPress: () async {
-                      // TODO 15: Implement shutdownLG() as async task
-                      await ssh.shutdownLG();
-                    },
-                    cardChild: const Center(
-                      child: Text(
-                        'SHUT DOWN LG',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Bounceable(
+                        onTap: () async {
+                          // FlyToView ftv = KmlHelper().getFlyToDetails(realtime);
+
+                          LGConnection client = LGConnection();
+                          await client.connectToLG();
+                          // await client.sendToLG(realtime, "realtime", ftv);
+                          // await client.shutdownLG();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .4,
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.green.withOpacity(0.75),
+                                  Colors.blue.withOpacity(0.75),
+                                  // Colors.blue
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // SizedBox(
+                              //   width: 15,
+                              // ),
+                              Icon(
+                                Icons.power_settings_new_rounded,
+                                size: 60,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 25,
+                              ),
+                              Text(
+                                "Shut Down Rig",
+                                style: GoogleFonts.openSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: .5,
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25,
+                              )
+                            ],
+                          ),
+                        )),
                   ),
-                )
+                ),
               ],
             ),
           ),
-          //
           Expanded(
             child: Row(
               children: [
                 Expanded(
-                  child: ReusableCard(
-                    colour: Colors.blue,
-                    onPress: () async {
-                      // TODO 16: Implement clearKML() as async task and test
-                      await ssh.clearKML();
-                    },
-                    cardChild: const Center(
-                      child: Text(
-                        'CLEAN KML',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Bounceable(
+                        onTap: () async {
+                          LGConnection client = LGConnection();
+                          await client.connectToLG();
+                          await client.cleanVisualization();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .4,
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.green.withOpacity(0.75),
+                                  Colors.blue.withOpacity(0.75),
+                                  // Colors.blue
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // SizedBox(
+                              //   width: 15,
+                              // ),
+                              Icon(
+                                Icons.cleaning_services_rounded,
+                                size: 60,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 25,
+                              ),
+                              Text(
+                                "Clean KML",
+                                style: GoogleFonts.openSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: .5,
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25,
+                              )
+                            ],
+                          ),
+                        )),
                   ),
                 ),
                 Expanded(
-                  child: ReusableCard(
-                    colour: Colors.blue,
-                    onPress: () async {
-                      // TODO 21: Implement rebootLG() as async task and test
-                      await ssh.rebootLG();
-                    },
-                    cardChild: const Center(
-                      child: Text(
-                        'REBOOT LG',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Bounceable(
+                        onTap: () async {
+                          LGConnection client = LGConnection();
+                          await client.connectToLG();
+                          await client.rebootLG();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .4,
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.green.withOpacity(0.75),
+                                  Colors.blue.withOpacity(0.75),
+                                  // Colors.blue
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // SizedBox(
+                              //   width: 15,
+                              // ),
+                              Icon(
+                                Icons.restart_alt,
+                                size: 60,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 25,
+                              ),
+                              Text(
+                                "Reboot Rig",
+                                style: GoogleFonts.openSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: .5,
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25,
+                              )
+                            ],
+                          ),
+                        )),
                   ),
                 ),
               ],
@@ -150,50 +318,118 @@ class _ButtonScreenState extends State<ButtonScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: ReusableCard(
-                    colour: Colors.blue,
-                    onPress: () async {
-                      // TODO 19: Implement searchPlace(String searchPlace) as async task and test
-                      await ssh.searchPlace(place);
-                    },
-                    cardChild: const Center(
-                      child: Text(
-                        // TODO 18: Add searchPlace variable to the button
-                        'SEARCH = $place',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Bounceable(
+                        onTap: () async {
+                          LGConnection client = LGConnection();
+                          await client.connectToLG();
+                          await client.searchPlace("India");
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .4,
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.green.withOpacity(0.75),
+                                  Colors.blue.withOpacity(0.75),
+                                  // Colors.blue
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // SizedBox(
+                              //   width: 15,
+                              // ),
+                              Icon(
+                                Icons.search_rounded,
+                                size: 60,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 25,
+                              ),
+                              Text(
+                                "Search Command",
+                                style: GoogleFonts.openSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: .5,
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25,
+                              )
+                            ],
+                          ),
+                        )),
                   ),
                 ),
                 Expanded(
-                  child: ReusableCard(
-                    colour: Colors.blue,
-                    onPress: () async {
-                      //   TODO 20: Implement sendKML() as async task
-                      // await usgs
-                      //     .getKML("2023-10-01", "2023-11-01", 2);
-                          // .then((value) async {
-                        await ssh.sendKML(kmlValue);
-                      // }
-                      // );
-                      // await ssh.sendKML(res);
-                    },
-                    cardChild: const Center(
-                      child: Text(
-                        'SEND KML',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Bounceable(
+                        onTap: () async {
+                          LGConnection client = LGConnection();
+                          await client.connectToLG();
+                          await client.sendToLG("kmlthis", "nameod",
+                              KmlHelper().getFlyToDetails("kmlthis"));
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .4,
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.green.withOpacity(0.75),
+                                  Colors.blue.withOpacity(0.75),
+                                  // Colors.blue
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // SizedBox(
+                              //   width: 15,
+                              // ),
+                              Icon(
+                                Icons.public_rounded,
+                                size: 60,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 25,
+                              ),
+                              Text(
+                                "Send KML",
+                                style: GoogleFonts.openSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: .5,
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25,
+                              )
+                            ],
+                          ),
+                        )),
                   ),
-                )
+                ),
               ],
             ),
           ),
