@@ -83,9 +83,7 @@ class _ButtonScreenState extends State<ButtonScreen> {
                     padding: EdgeInsets.all(15),
                     child: Bounceable(
                         onTap: () async {
-                          LGConnection client = LGConnection();
-                          await client.connectToLG();
-                          await client.relaunchLG();
+                          await lg.relaunchLG();
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * .4,
@@ -139,12 +137,7 @@ class _ButtonScreenState extends State<ButtonScreen> {
                     padding: EdgeInsets.all(15),
                     child: Bounceable(
                         onTap: () async {
-                          // FlyToView ftv = KmlHelper().getFlyToDetails(realtime);
-
-                          LGConnection client = LGConnection();
-                          await client.connectToLG();
-                          // await client.sendToLG(realtime, "realtime", ftv);
-                          // await client.shutdownLG();
+                          await lg.shutdownLG();
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * .4,
@@ -204,9 +197,7 @@ class _ButtonScreenState extends State<ButtonScreen> {
                     padding: EdgeInsets.all(15),
                     child: Bounceable(
                         onTap: () async {
-                          LGConnection client = LGConnection();
-                          await client.connectToLG();
-                          await client.cleanVisualization();
+                          await lg.cleanVisualization();
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * .4,
@@ -260,9 +251,7 @@ class _ButtonScreenState extends State<ButtonScreen> {
                     padding: EdgeInsets.all(15),
                     child: Bounceable(
                         onTap: () async {
-                          LGConnection client = LGConnection();
-                          await client.connectToLG();
-                          await client.rebootLG();
+                          await lg.rebootLG();
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * .4,
@@ -322,9 +311,7 @@ class _ButtonScreenState extends State<ButtonScreen> {
                     padding: EdgeInsets.all(15),
                     child: Bounceable(
                         onTap: () async {
-                          LGConnection client = LGConnection();
-                          await client.connectToLG();
-                          await client.searchPlace("India");
+                          await lg.searchPlace("India");
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * .4,
@@ -378,9 +365,7 @@ class _ButtonScreenState extends State<ButtonScreen> {
                     padding: EdgeInsets.all(15),
                     child: Bounceable(
                         onTap: () async {
-                          LGConnection client = LGConnection();
-                          await client.connectToLG();
-                          await client.sendToLG("kmlthis", "nameod",
+                          await lg.sendToLG("kmlthis", "nameod",
                               KmlHelper().getFlyToDetails("kmlthis"));
                         },
                         child: Container(

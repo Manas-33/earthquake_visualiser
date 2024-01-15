@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:dartssh2/dartssh2.dart';
 import 'package:earthquake_visualiser/models/flyto.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ssh2/ssh2.dart';
 
 class LGConnection {
   late String _host;
@@ -25,13 +26,8 @@ class LGConnection {
     await initConnectionDetails();
 
     try {
-      _client = SSHClient(
-          host: _host,
-          port: int.parse(_port),
-          username: _username,
-          passwordOrKey: _passwordOrKey);
-
-      await _client!.connect();
+      _client = SSHClient(await SSHSocket.connect(_host, int.parse(_port)),
+          username: _username, onPasswordRequest: () => _passwordOrKey);
       return true;
     } on SocketException catch (e) {
       print('Failed to connect: $e');
@@ -41,10 +37,11 @@ class LGConnection {
 
   searchPlace(String placeName) async {
     try {
-      if (_client == null) {
-        print('SSH client is not initialized.');
-        return null;
-      }
+      // if (_client == null) {
+      //   print('SSH client is not initialized.');
+      //   return null;
+      // }
+      connectToLG();
       final execResult =
           await _client?.execute('echo "search=$placeName" >/tmp/query.txt');
       return execResult;
@@ -56,10 +53,8 @@ class LGConnection {
 
   relaunchLG() async {
     try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
+      connectToLG();
+
       final execResult = await _client!.execute("""RELAUNCH_CMD="\\
           if [ -f /etc/init/lxdm.conf ]; then
             export SERVICE=lxdm
@@ -83,10 +78,8 @@ class LGConnection {
 
   Future shutdownLG() async {
     try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
+      connectToLG();
+
       for (var i = int.parse(_numberOfRigs); i >= 1; i--) {
         await _client!.execute(
             'sshpass -p ${_passwordOrKey} ssh -t lg$i "echo ${_passwordOrKey} | sudo -S poweroff"');
@@ -99,10 +92,7 @@ class LGConnection {
 
   rebootLG() async {
     try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
+      connectToLG();
 
       for (int i = int.parse(_numberOfRigs); i > 0; i--) {
         await _client!.execute(
@@ -117,14 +107,11 @@ class LGConnection {
 
   cleanVisualization() async {
     try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
+      connectToLG();
+
       // var a = await _client!.execute('> /var/www/html/kmls.txt');
       // return a;
       await _client!.execute("echo '' > /var/www/html/kmls.txt");
-      
     } catch (e) {
       print('Could not connect to host LG');
       return Future.error(e);
@@ -144,106 +131,50 @@ class LGConnection {
     localFile.writeAsString(kml);
     File localFile2 = File('$localPath/kmls.txt');
     localFile2.writeAsString(kml);
-    return _uploadToLG('$localPath/$projectname.kml', projectname, ftv);
+    return _uploadToLG('$localPath/$projectname.kml', projectname, ftv, kml);
   }
 
-  _uploadToLG(String localPath, String projectname, FlyToView ftv) async {
+  _uploadToLG(
+      String localPath, String projectname, FlyToView ftv, String kml) async {
     try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
-      await _client!.connect();
+      connectToLG();
+
       await _client!.execute('echo "" > /tmp/query.txt');
       await _client!.execute('> /var/www/html/kmls.txt');
 
-      await _client!.connectSFTP();
-      await _client!.sftpUpload(
-        path: localPath,
-        toPath: '/var/www/html',
-        callback: (progress) {
-          print('Sent $progress');
-        },
-      );
-      await _client!.execute(ftv.getCommand());
+      var sftp = await _client?.sftp();
+      
+    
+      await _client?.run("echo '$kml' > /var/www/html/$projectname.kml");
+      // .then((value) {uploading =false;print("this is done");});
+      // await waitWhile(() => uploading);
+      await _client!.run(ftv.getCommand());
       await _client!.execute(
-          'echo "http://lg1:81/$projectname.kml" > /var/www/html/kmls.txt');
+          'echo "http://lg1:81/$projectname.kml" > /var/www/html/kmls.txt').then((value) => print("done"));
     } catch (e) {
       print('Could not connect to host LG');
       return Future.error(e);
     }
   }
+
+  Future waitWhile(bool Function() test,
+    [Duration pollInterval = Duration.zero]) {
+  var completer = Completer();
+  check() {
+    if (!test()) {
+      completer.complete();
+    } else {
+      Timer(pollInterval, check);
+    }
+  }
+
+  check();
+  return completer.future;
+}
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
     return directory.path;
-  }
-
-  buildOrbit(String content) async {
-    String localPath = await _localPath;
-    File localFile = File('$localPath/Orbit.kml');
-    localFile.writeAsString(content);
-
-    String filePath = '$localPath/Orbit.kml';
-
-    try {
-      await _client!.connect();
-      await _client!.connectSFTP();
-      await _client!.sftpUpload(
-        path: filePath,
-        toPath: '/var/www/html',
-        callback: (progress) {
-          print('Sent $progress');
-        },
-      );
-      return await _client!.execute(
-          "echo '\nhttp://lg1:81/Orbit.kml' >> /var/www/html/kmls.txt");
-    } catch (e) {
-      print('Could not connect to host LG');
-      return Future.error(e);
-    }
-  }
-
-  startOrbit() async {
-    try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
-      await _client!.connect();
-      return await _client!.execute('echo "playtour=Orbit" > /tmp/query.txt');
-    } catch (e) {
-      print('Could not connect to host LG');
-      return Future.error(e);
-    }
-  }
-
-  stopOrbit() async {
-    try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
-      await _client!.connect();
-      return await _client!.execute('echo "exittour=true" > /tmp/query.txt');
-    } catch (e) {
-      print('Could not connect to host LG');
-      return Future.error(e);
-    }
-  }
-
-  cleanOrbit() async {
-    try {
-      if (_client == null) {
-        print("The client is not initialised.");
-        return null;
-      }
-      await _client!.connect();
-      return await _client!.execute('echo "" > /tmp/query.txt');
-    } catch (e) {
-      print('Could not connect to host LG');
-      return Future.error(e);
-    }
   }
 }

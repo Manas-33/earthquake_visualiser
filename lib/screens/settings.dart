@@ -241,9 +241,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 onPressed: () async {
                   // TODO 7: Initialize SSH and execute the demo command and test
                  //Re-initialization of the SSH instance to avoid errors for beginners
-                 LGConnection l = LGConnection();
-                  await l.connectToLG();
-                  var execResult = await l.searchPlace("India");
+                 
+                  var execResult = await lg.searchPlace("India");
                   if (execResult != null) {
                     print('Command executed successfully');
                   } else {

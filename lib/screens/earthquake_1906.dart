@@ -20,6 +20,20 @@ class Earthquake1906 extends StatefulWidget {
 }
 
 class _Earthquake1906State extends State<Earthquake1906> {
+  late LGConnection lg;
+  @override
+  void initState() {
+    lg = LGConnection();
+    _connectToLG();
+    super.initState();
+  }
+
+ Future<void> _connectToLG() async {
+    bool? result = await lg.connectToLG();
+    setState(() {
+      connectionStatus = result!;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,17 +98,8 @@ class _Earthquake1906State extends State<Earthquake1906> {
                         onTap: () async {
                           try {
                             print("plate boundaries");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
 
-                            await client
+                            await lg
                                 .sendToLG(
                                     earthquake06[0],
                                     "plateboundaries06",
@@ -161,17 +166,8 @@ class _Earthquake1906State extends State<Earthquake1906> {
                         onTap: () async {
                           try {
                             print("bay area");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
-
-                            await client
+                          
+                            await lg
                                 .sendToLG(
                                     earthquake06[1],
                                     "bayarea06",
@@ -246,17 +242,9 @@ class _Earthquake1906State extends State<Earthquake1906> {
                         onTap: () async {
                           try {
                             print("historic ruptures");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
+                         
 
-                            await client
+                            await lg
                                 .sendToLG(
                                     earthquake06[2],
                                     "historicrup06",
@@ -325,17 +313,9 @@ class _Earthquake1906State extends State<Earthquake1906> {
                         onTap: () async {
                           try {
                             print("rupture length");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
+                            
 
-                            await client
+                            await lg
                                 .sendToLG(
                                     earthquake06[3],
                                     "rupturelen06",
@@ -413,17 +393,9 @@ class _Earthquake1906State extends State<Earthquake1906> {
                         onTap: () async {
                           try {
                             print("shaking intensity");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
+                          
 
-                            await client
+                            await lg
                                 .sendToLG(
                                     earthquake06[4],
                                     "shaking06",
@@ -494,17 +466,8 @@ class _Earthquake1906State extends State<Earthquake1906> {
                         onTap: () async {
                           try {
                             print("historical photss");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
-
-                            await client
+                           
+                            await lg
                                 .sendToLG(bayin1906, "photos06",
                                     KmlHelper().getFlyToDetails(bayin1906))
                                 .then((value) {

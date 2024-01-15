@@ -44,7 +44,8 @@ dependencies:
   wave: ^0.2.2
   flutter_svg: ^2.0.7
   flutter_svg_provider: ^1.0.3
-  ssh2: ^2.2.3
+  # ssh2: ^2.2.3
+  dartssh2: ^2.8.2
   xml: ^6.5.0
   page_transition: ^2.1.0
   flutter:

@@ -1,3 +1,4 @@
+import 'package:dartssh2/dartssh2.dart';
 import 'package:earthquake_visualiser/connections/lg.dart';
 import 'package:earthquake_visualiser/constants.dart';
 import 'package:earthquake_visualiser/models/kml_helper.dart';
@@ -18,7 +19,25 @@ class Earthquake1868 extends StatefulWidget {
   State<Earthquake1868> createState() => _Earthquake1868State();
 }
 
+bool connectionStatus = false;
+
 class _Earthquake1868State extends State<Earthquake1868> {
+  late LGConnection ssh;
+  @override
+  void initState() {
+    // TODO: implement initState
+    ssh = LGConnection();
+    _connectToLG();
+    super.initState();
+  }
+
+  Future<void> _connectToLG() async {
+    bool? result = await ssh.connectToLG();
+    setState(() {
+      connectionStatus = result!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,17 +102,7 @@ class _Earthquake1868State extends State<Earthquake1868> {
                         onTap: () async {
                           try {
                             print("Bay Area Faults");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
-
-                            await client
+                            await ssh
                                 .sendToLG(
                                     earthquake68[0],
                                     "bayAreaAFaults68",
@@ -127,15 +136,15 @@ class _Earthquake1868State extends State<Earthquake1868> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               SizedBox(
-                            width: 20,
-                          ),
-                          Image.asset(
-                            "assets/images/fault.png",
-                            // color: Colors.white,
-                            height: 50,
-                            width: 50,
-                          ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Image.asset(
+                                "assets/images/fault.png",
+                                // color: Colors.white,
+                                height: 50,
+                                width: 50,
+                              ),
                               SizedBox(
                                 width: 15,
                               ),
@@ -162,17 +171,9 @@ class _Earthquake1868State extends State<Earthquake1868> {
                         onTap: () async {
                           try {
                             print("Global Positioning Systems ");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
+                            
 
-                            await client
+                            await ssh
                                 .sendToLG(gps, "gps68",
                                     KmlHelper().getFlyToDetails(gps))
                                 .then((value) {
@@ -203,15 +204,15 @@ class _Earthquake1868State extends State<Earthquake1868> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               SizedBox(
-                            width: 20,
-                          ),
-                          Image.asset(
-                            "assets/images/gps.png",
-                            // color: Colors.white,
-                            height: 50,
-                            width: 50,
-                          ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Image.asset(
+                                "assets/images/gps.png",
+                                // color: Colors.white,
+                                height: 50,
+                                width: 50,
+                              ),
                               SizedBox(
                                 width: 15,
                               ),
@@ -245,22 +246,11 @@ class _Earthquake1868State extends State<Earthquake1868> {
                         onTap: () async {
                           try {
                             print("insar");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
+                            
 
-                            await client
-                                .sendToLG(
-                                    insar,
-                                    "insar68",
-                                    KmlHelper()
-                                        .getFlyToDetails(insar))
+                            await ssh
+                                .sendToLG(insar, "insar68",
+                                    KmlHelper().getFlyToDetails(insar))
                                 .then((value) {
                               goToPage(2);
                               Navigator.push(
@@ -289,15 +279,15 @@ class _Earthquake1868State extends State<Earthquake1868> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               SizedBox(
-                            width: 20,
-                          ),
-                          Image.asset(
-                            "assets/images/satellite.png",
-                            // color: Colors.white,
-                            height: 50,
-                            width: 50,
-                          ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Image.asset(
+                                "assets/images/satellite.png",
+                                // color: Colors.white,
+                                height: 50,
+                                width: 50,
+                              ),
                               SizedBox(
                                 width: 15,
                               ),
@@ -324,17 +314,8 @@ class _Earthquake1868State extends State<Earthquake1868> {
                         onTap: () async {
                           try {
                             print("shaking");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
-
-                            await client
+                            
+                            await ssh
                                 .sendToLG(
                                     earthquake68[3],
                                     "shaking68",
@@ -368,15 +349,15 @@ class _Earthquake1868State extends State<Earthquake1868> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               SizedBox(
-                            width: 20,
-                          ),
-                          Image.asset(
-                            "assets/images/rumble.png",
-                            // color: Colors.white,
-                            height: 50,
-                            width: 50,
-                          ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Image.asset(
+                                "assets/images/rumble.png",
+                                // color: Colors.white,
+                                height: 50,
+                                width: 50,
+                              ),
                               SizedBox(
                                 width: 15,
                               ),
@@ -412,17 +393,9 @@ class _Earthquake1868State extends State<Earthquake1868> {
                         onTap: () async {
                           try {
                             print("bed vs soft");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
+                            
 
-                            await client
+                            await ssh
                                 .sendToLG(
                                     earthquake68[4],
                                     "bedsoft",
@@ -456,15 +429,15 @@ class _Earthquake1868State extends State<Earthquake1868> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               SizedBox(
-                            width: 20,
-                          ),
-                          Image.asset(
-                            "assets/images/bedrock.png",
-                            // color: Colors.white,
-                            height: 50,
-                            width: 50,
-                          ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Image.asset(
+                                "assets/images/bedrock.png",
+                                // color: Colors.white,
+                                height: 50,
+                                width: 50,
+                              ),
                               SizedBox(
                                 width: 15,
                               ),
@@ -493,22 +466,10 @@ class _Earthquake1868State extends State<Earthquake1868> {
                         onTap: () async {
                           try {
                             print("bay area in 68");
-                            LGConnection client = LGConnection();
-                            var result = client.connectToLG().then((value) {
-                              ToastService.showSuccessToast(
-                                context,
-                                length: ToastLength.medium,
-                                expandedHeight: 100,
-                                message: "This is a success toast 🥂!",
-                              );
-                            });
-
-                            await client
-                                .sendToLG(
-                                   bayin1868,
-                                    "bayin68",
-                                    KmlHelper()
-                                        .getFlyToDetails(bayin1868))
+                            
+                            await ssh
+                                .sendToLG(bayin1868, "bayin68",
+                                    KmlHelper().getFlyToDetails(bayin1868))
                                 .then((value) {
                               goToPage(5);
                               Navigator.push(
