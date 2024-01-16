@@ -1,4 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:earthquake_visualiser/connections/lg.dart';
+import 'package:earthquake_visualiser/constants.dart';
+import 'package:earthquake_visualiser/models/kml_helper.dart';
+import 'package:earthquake_visualiser/widget/kmlStrings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,6 +36,17 @@ class _InfoScreen1868State extends State<InfoScreen1868> {
     -0.05,
     0.0,
   ];
+  late LGConnection ssh;
+  @override
+  void initState() {
+    ssh = LGConnection();
+    _connectToLG();
+    super.initState();
+  }
+
+  Future<void> _connectToLG() async {
+    bool? result = await ssh.connectToLG();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +141,16 @@ class _InfoScreen1868State extends State<InfoScreen1868> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("Bay Area Faults");
+                          await ssh.sendToLG(
+                              earthquake68[0],
+                              "bayAreaAFaults68",
+                              KmlHelper().getFlyToDetails(earthquake68[0]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -239,8 +262,15 @@ class _InfoScreen1868State extends State<InfoScreen1868> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("Global Positioning Systems ");
+
+                          await ssh.sendToLG(
+                              gps, "gps68", KmlHelper().getFlyToDetails(gps));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -352,8 +382,15 @@ class _InfoScreen1868State extends State<InfoScreen1868> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("insar");
+
+                          await ssh.sendToLG(insar, "insar68",
+                              KmlHelper().getFlyToDetails(insar));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -465,8 +502,15 @@ class _InfoScreen1868State extends State<InfoScreen1868> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("shaking");
+
+                          await ssh.sendToLG(earthquake68[3], "shaking68",
+                              KmlHelper().getFlyToDetails(earthquake68[3]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -578,8 +622,15 @@ class _InfoScreen1868State extends State<InfoScreen1868> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("bed vs soft");
+
+                          await ssh.sendToLG(earthquake68[4], "bedsoft",
+                              KmlHelper().getFlyToDetails(earthquake68[4]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -691,8 +742,15 @@ class _InfoScreen1868State extends State<InfoScreen1868> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("bay area in 68");
+
+                          await ssh.sendToLG(bayin1868, "bayin68",
+                              KmlHelper().getFlyToDetails(bayin1868));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",

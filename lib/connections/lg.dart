@@ -138,19 +138,20 @@ class LGConnection {
       String localPath, String projectname, FlyToView ftv, String kml) async {
     try {
       connectToLG();
-
+      bool uploading = true;
       await _client!.execute('echo "" > /tmp/query.txt');
       await _client!.execute('> /var/www/html/kmls.txt');
 
-      var sftp = await _client?.sftp();
-      
-    
+      // var sftp = await _client?.sftp();
+
       await _client?.run("echo '$kml' > /var/www/html/$projectname.kml");
       // .then((value) {uploading =false;print("this is done");});
       // await waitWhile(() => uploading);
       await _client!.run(ftv.getCommand());
-      await _client!.execute(
-          'echo "http://lg1:81/$projectname.kml" > /var/www/html/kmls.txt').then((value) => print("done"));
+      await _client!
+          .execute(
+              'echo "http://lg1:81/$projectname.kml" > /var/www/html/kmls.txt')
+          .then((value) => print("done"));
     } catch (e) {
       print('Could not connect to host LG');
       return Future.error(e);
@@ -158,19 +159,19 @@ class LGConnection {
   }
 
   Future waitWhile(bool Function() test,
-    [Duration pollInterval = Duration.zero]) {
-  var completer = Completer();
-  check() {
-    if (!test()) {
-      completer.complete();
-    } else {
-      Timer(pollInterval, check);
+      [Duration pollInterval = Duration.zero]) {
+    var completer = Completer();
+    check() {
+      if (!test()) {
+        completer.complete();
+      } else {
+        Timer(pollInterval, check);
+      }
     }
-  }
 
-  check();
-  return completer.future;
-}
+    check();
+    return completer.future;
+  }
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();

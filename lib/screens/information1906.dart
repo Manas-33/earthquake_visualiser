@@ -1,4 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:earthquake_visualiser/connections/lg.dart';
+import 'package:earthquake_visualiser/constants.dart';
+import 'package:earthquake_visualiser/models/kml_helper.dart';
+import 'package:earthquake_visualiser/widget/kmlStrings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,6 +36,17 @@ class _InfoScreen1906State extends State<InfoScreen1906> {
     -0.05,
     0.0,
   ];
+  late LGConnection lg;
+  @override
+  void initState() {
+    lg = LGConnection();
+    _connectToLG();
+    super.initState();
+  }
+
+  Future<void> _connectToLG() async {
+    bool? result = await lg.connectToLG();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +141,17 @@ class _InfoScreen1906State extends State<InfoScreen1906> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("plate boundaries");
+
+                          await lg.sendToLG(
+                              earthquake06[0],
+                              "plateboundaries06",
+                              KmlHelper().getFlyToDetails(earthquake06[0]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -239,8 +263,15 @@ class _InfoScreen1906State extends State<InfoScreen1906> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("bay area");
+
+                          await lg.sendToLG(earthquake06[1], "bayarea06",
+                              KmlHelper().getFlyToDetails(earthquake06[1]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -352,8 +383,15 @@ class _InfoScreen1906State extends State<InfoScreen1906> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("historic ruptures");
+
+                          await lg.sendToLG(earthquake06[2], "historicrup06",
+                              KmlHelper().getFlyToDetails(earthquake06[2]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -465,8 +503,15 @@ class _InfoScreen1906State extends State<InfoScreen1906> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("rupture length");
+
+                          await lg.sendToLG(earthquake06[3], "rupturelen06",
+                              KmlHelper().getFlyToDetails(earthquake06[3]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -578,8 +623,15 @@ class _InfoScreen1906State extends State<InfoScreen1906> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("shaking intensity");
+
+                          await lg.sendToLG(earthquake06[4], "shaking06",
+                              KmlHelper().getFlyToDetails(earthquake06[4]));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
@@ -691,8 +743,15 @@ class _InfoScreen1906State extends State<InfoScreen1906> {
                         color: Colors.white),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () {
-                        print("pressend");
+                      onTap: () async {
+                        try {
+                          print("historical photss");
+
+                          await lg.sendToLG(bayin1906, "photos06",
+                              KmlHelper().getFlyToDetails(bayin1906));
+                        } catch (e) {
+                          print("the error is $e");
+                        }
                       },
                       child: Text(
                         "Visualize it!",
